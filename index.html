@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play Once Human - The Ultimate Weird Survival Game</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+/* --- CUSTOM CURSOR (PC GAMERS) --- */
+        body, html {
+            /* درت ليك رابط ديال Crosshair (سهم التصويب) صغير باش تجرب بيه */
+            cursor: url('https://i.postimg.cc/bvdf7LMj/C1.png') 16 16, auto !important;
+        }
+
+        /* هادو البلايص لي كيكليكي فيهم الزائر (أزرار، روابط، تريلر، الأسئلة) */
+        a, .btn, .nav-btn, .trailer-thumbnail-wrapper, .faq-summary, .diamond, .nav-arrow, .close-modal {
+            /* درت ليك رابط ديال سهم مضيء ملي يحط الماوس على شي بطونة */
+            cursor: url('https://i.postimg.cc/jSyCmxpj/k1.png') 16 16, pointer !important;
+        }
+
+        /* --- DESIGN TOKENS --- */
+        :root {
+            --bg-base: #07070a;
+            --bg-section-alt: #0d0d12;
+            --bg-card: #14141a;
+            --bg-card-hover: #1c1c24;
+            --text-main: #e0e0e0;
+            --text-muted: #8a8a9e;
+            --text-white: #ffffff;
+            --accent-primary: #e63946; 
+            --accent-primary-hover: #ff4d5b;
+            --accent-secondary: #00f0ff; 
+            --star-color: #ffd700;
+            --border-subtle: rgba(255, 255, 255, 0.05);
+            --border-accent: rgba(230, 57, 70, 0.3);
+            --font-heading: 'Oswald', sans-serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-white);
+            letter-spacing: 1px;
+        }
+
+        a { text-decoration: none; }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section { padding: 100px 0; overflow: hidden; }
+        .bg-alt { background-color: var(--bg-section-alt); }
+
+        /* --- ANIMATIONS KEYFRAMES --- */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+
+
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+
+        /* --- NAVBAR STYLES --- */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            background: rgba(7, 7, 10, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(7, 7, 10, 0.95);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            transition: padding 0.3s ease;
+        }
+
+        .navbar.scrolled .nav-container { padding: 10px 20px; }
+
+/* --- ستايل اللوگو (صورة) --- */
+        .nav-logo {
+            display: flex; 
+            align-items: center;
+        }
+
+        .nav-logo img {
+            max-height: 45px; /* هاد الرقم كيتحكم فكُبر اللوگو، تقدر تزيد ولا تنقص فيه */
+            width: auto;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.1));
+        }
+
+        /* تأثير مضيء خفيف ملي كتحط عليه الماوس */
+        .nav-logo:hover img {
+            transform: scale(1.05);
+            filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.6));
+        }
+
+        .nav-links { display: flex; gap: 35px; align-items: center; }
+        .nav-links a {
+            color: var(--text-white); font-family: var(--font-heading);
+            font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;
+            position: relative; transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 2px;
+            bottom: -5px; left: 0; background-color: var(--accent-secondary);
+            transition: width 0.3s ease; box-shadow: 0 0 10px var(--accent-secondary);
+        }
+
+        .nav-links a:hover { color: var(--accent-secondary); }
+        .nav-links a:hover::after { width: 100%; }
+
+
+
+        /* --- SCROLL REVEAL CLASSES --- */
+        .reveal {
+            opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* --- TYPOGRAPHY --- */
+        .section-title {
+            text-align: center; font-size: 2.5rem; margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.1);
+        }
+        .section-subtitle {
+            text-align: center; color: var(--text-muted); font-size: 1rem;
+            margin-bottom: 60px; letter-spacing: 2px; text-transform: uppercase;
+        }
+        .highlight-text { color: var(--accent-primary); }
+
+/* --- PC GAMING BUTTONS UPGRADE --- */
+        .btn, .nav-btn {
+            display: inline-block; 
+            font-family: var(--font-heading); 
+            font-weight: 700; 
+            color: var(--text-white); 
+            text-transform: uppercase; 
+            cursor: pointer; 
+            position: relative;
+            z-index: 1;
+            overflow: hidden; /* باش اللمعة ماتخرجش على الإطار */
+            
+            /* التقطيعة ديال الزوايا زدنا فيها شوية باش تبان مزيان */
+            clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+            
+            /* إطار شبه شفاف كيعطي بُعد 3D */
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            
+            /* تدرج لوني احترافي بلاصة لون أحمر باهت */
+            background: linear-gradient(45deg, var(--accent-primary), #990f1d);
+            
+            /* توهج دائم وضل للنص باش يبان مقروء */
+            box-shadow: 0 0 15px rgba(230, 57, 70, 0.4);
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+            
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* الحجم الخاص بالزر الكبير فالوسط */
+        .btn {
+            font-size: 1.3rem; 
+            letter-spacing: 2px; 
+            padding: 20px 45px;
+            animation: pulse-btn-new 2.5s infinite; /* نبض خفيف */
+        }
+
+        /* الحجم الخاص بزر القائمة الفوقاني */
+        .nav-btn {
+            font-size: 1rem; 
+            letter-spacing: 1px; 
+            padding: 10px 24px;
+        }
+
+        /* لمعة الزجاج (Glass Shine Effect) لي مخبية */
+        .btn::before, .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transform: skewX(-25deg); /* كنميلوها باش تجي بحال الضوء */
+            z-index: -1;
+            transition: left 0.6s ease;
+        }
+
+        /* تفاعل خرافي ملي كتحط الماوس (Hover) */
+        .btn:hover, .nav-btn:hover {
+            /* اللون كيولي فاتح */
+            background: linear-gradient(45deg, #ff4d5b, var(--accent-primary));
+            transform: translateY(-4px) scale(1.02);
+            animation: none; /* كنحبسو النبض */
+            
+            /* الإطار كيولي سماوي باش يتخلطو ألوان التيم + توهج قوي */
+            border-color: var(--accent-secondary); 
+            box-shadow: 0 10px 25px rgba(230, 57, 70, 0.8), 0 0 15px rgba(0, 240, 255, 0.5);
+        }
+
+        /* اللمعة كدوز بالزربة ملي كتحط الماوس */
+        .btn:hover::before, .nav-btn:hover::before {
+            left: 200%;
+        }
+
+        /* أنيماسيون النبض الجديدة (أكثر نعومة) */
+        @keyframes pulse-btn-new {
+            0% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.6); }
+            70% { box-shadow: 0 0 0 15px rgba(230, 57, 70, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0); }
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            position: relative; padding: 150px 0 100px; text-align: center;
+            min-height: 100vh; display: flex; align-items: center;
+            justify-content: center; overflow: hidden; background-color: var(--bg-base);
+        }
+        .hero-video-bg {
+            position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%;
+            width: auto; height: auto; transform: translateX(-50%) translateY(-50%);
+            object-fit: cover; z-index: 0;
+        }
+        .hero-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(7,7,10,0.6) 0%, rgba(7,7,10,0.4) 50%, rgba(7,7,10,1) 100%);
+            z-index: 1;
+        }
+        #particles-js {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2; pointer-events: none;
+        }
+        .hero-content { position: relative; z-index: 3; max-width: 800px; padding: 0 20px; }
+        .hero h1 { font-size: 4.5rem; line-height: 1.1; margin-bottom: 20px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
+        .hero p {
+            font-size: 1.2rem; color: #f0f0f0; margin-bottom: 40px; max-width: 650px;
+            margin-left: auto; margin-right: auto; text-shadow: 1px 1px 5px rgba(0,0,0,0.8);
+        }
+
+
+/* --- فواصل السيكشنات (SECTION DIVIDERS) --- */
+        .has-divider {
+            position: relative;
+            overflow: visible !important; /* هادي هي الساروت باش المتصفح مايقطعش الصورة من الفوق */
+        }
+
+        .has-divider::before {
+            content: '';
+            position: absolute;
+            top: -120px; 
+            left: 0;
+            width: 100%;
+            height: 160px; 
+            
+            /* زدنا www. فالرابط باش تقرا مزيان، وزدنا شوية د الإضاءة باش يبانو الخطوط الحمرين */
+            background-image: url('https://i.postimg.cc/wvQd3gM4/D.png');
+            background-size: 100% 100%; 
+            background-repeat: no-repeat;
+            background-position: center;
+            filter: brightness(1.2) drop-shadow(0 0 10px rgba(0,0,0,0.8)); /* باش يبان الفاصل واعر فوق الكحل */
+            
+            z-index: 10; /* كبرنا الرقم باش يجي فوق كلشي */
+            pointer-events: none; 
+        }
+
+
+        /* --- ENHANCED VIDEO SHOWCASE --- */
+        /* --- TRAILER THUMBNAIL & PLAY BUTTON --- */
+        .trailer-thumbnail-wrapper {
+            position: relative; max-width: 900px; margin: 0 auto;
+            border-radius: 12px; overflow: hidden; cursor: pointer;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 240, 255, 0.2);
+            border: 1px solid var(--border-subtle);
+            transition: all 0.4s ease;
+        }
+
+        .trailer-thumbnail-wrapper:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 240, 255, 0.5);
+            border-color: rgba(0, 240, 255, 0.5);
+        }
+
+        .trailer-bg {
+            width: 100%; height: auto; display: block;
+            aspect-ratio: 16/9; object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .trailer-thumbnail-wrapper:hover .trailer-bg {
+            transform: scale(1.05);
+        }
+
+        .play-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(7, 7, 10, 0.4);
+            transition: background 0.3s ease;
+        }
+
+        .trailer-thumbnail-wrapper:hover .play-overlay {
+            background: rgba(7, 7, 10, 0.2);
+        }
+
+/* --- ستايل أيقونة التشغيل (الصورة) --- */
+        .custom-play-btn {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2;
+            transition: all 0.3s ease;
+            /* أنيماسيون خفيفة باش الأيقونة تبقى تطلع وتهبط بحال يلا كطوف */
+            animation: float-icon 3s ease-in-out infinite; 
+        }
+
+        .custom-play-btn img {
+            width: 100px; /* من هنا تقدر تكبر أو تصغر الأيقونة ديالك */
+            height: auto;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8)); /* ضل كحل باش تبان معزولة على الخلفية */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* التأثير ملي تحط الماوس على التريلر */
+        .trailer-thumbnail-wrapper:hover .custom-play-btn {
+            animation-play-state: paused; /* كنحبسو الأنيماسيون ديال الطفوان ملي تقيسها */
+        }
+
+        .trailer-thumbnail-wrapper:hover .custom-play-btn img {
+            transform: scale(1.15); /* الأيقونة كتكبر شوية */
+            /* توهج سماوي خفيف ملي تحط الماوس */
+            filter: drop-shadow(0 0 25px rgba(0, 240, 255, 0.8)); 
+        }
+
+        @keyframes float-icon {
+            0% { transform: translate(-50%, -50%); }
+            50% { transform: translate(-50%, -60%); }
+            100% { transform: translate(-50%, -50%); }
+        }
+
+        .trailer-thumbnail-wrapper:hover .play-btn-circle {
+            background: var(--accent-secondary);
+            color: #000;
+            box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7);
+            animation: pulse-btn-blue 2s infinite;
+        }
+
+        @keyframes pulse-btn-blue {
+            0% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(0, 240, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0); }
+        }
+
+        /* --- VIDEO MODAL (POPUP) --- */
+        .modal {
+            display: none; position: fixed; z-index: 9999;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            justify-content: center; align-items: center;
+            opacity: 0; animation: fadeInModal 0.4s forwards;
+        }
+
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            position: relative; width: 90%; max-width: 1000px;
+            background: #000; border-radius: 8px;
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.3);
+            border: 1px solid var(--border-accent);
+        }
+
+/* --- ستايل زر الإغلاق (صورة) --- */
+        .close-modal {
+            position: absolute; 
+            top: -45px; /* باش يجي طالع شوية على الفيديو */
+            right: -10px; 
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .close-modal img {
+            width: 35px; /* من هنا كتحكم فكُبر ديال علامة X */
+            height: auto;
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.8)); /* ضل كحل باش تبان واخا تكون الخلفية بيضاء */
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* التأثير ملي تحط الماوس على علامة X */
+        .close-modal:hover img {
+            transform: scale(1.2) rotate(90deg); /* كتكبر شوية وكتدور بـ 90 درجة */
+            filter: drop-shadow(0 0 15px rgba(230, 57, 70, 0.9)); /* توهج باللون الأحمر */
+        }
+        .video-showcase-wrapper {
+            position: relative; max-width: 900px; margin: 0 auto 30px auto; padding: 4px;
+            background: linear-gradient(45deg, var(--accent-primary), #1a1a24, var(--accent-secondary));
+            border-radius: 12px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(230, 57, 70, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .video-showcase-wrapper:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 40px rgba(0, 240, 255, 0.4);
+            background: linear-gradient(45deg, var(--accent-secondary), #1a1a24, var(--accent-primary));
+        }
+        .video-responsive-container {
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+            border-radius: 8px; background-color: #000;
+        }
+        .video-responsive-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;
+        }
+
+
+
+
+/* --- EPIC SLIDER GALLERY (LIKE SCREENSHOT) --- */
+        .epic-slider-container {
+            position: relative; width: 100%; height: 550px;
+            background-color: var(--bg-card); border-radius: 8px;
+            overflow: hidden; margin-bottom: 20px;
+            /* تأثير الإضاءة الحمراء على الإطار */
+            box-shadow: 0 0 30px rgba(230, 57, 70, 0.15), inset 0 0 50px rgba(0,0,0,0.8);
+            border: 1px solid rgba(230, 57, 70, 0.3); 
+        }
+
+        /* توهج أزرق وأحمر خفيف فالجوانب الداخلية */
+        .epic-slider-container::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            box-shadow: inset 30px 0 60px rgba(0, 240, 255, 0.1), inset -30px 0 60px rgba(230, 57, 70, 0.1);
+            pointer-events: none; z-index: 2;
+        }
+
+        .epic-slides { width: 100%; height: 100%; position: relative; }
+
+        .epic-slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.8s ease-in-out, transform 4s ease;
+            transform: scale(1.05); /* زوم خفيف عند الظهور */
+            z-index: 1;
+        }
+
+        .epic-slide.active { opacity: 1; visibility: visible; transform: scale(1); }
+
+        .epic-slide-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 60%;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 40%, transparent 100%);
+            z-index: 1;
+        }
+
+        .epic-slide-content {
+            position: absolute; bottom: 60px; left: 0; width: 100%;
+            z-index: 3; text-align: center; /* النصوص فالوسط بحال التصويرة */
+        }
+
+        .slide-subtitle {
+            font-family: var(--font-body); font-size: 1rem; color: #fff;
+            letter-spacing: 2px; margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-weight: 600;
+        }
+
+        .slide-title {
+            font-family: var(--font-heading); font-size: 3.5rem;
+            margin: 0; line-height: 1.1; letter-spacing: 1px;
+            /* الديگرادي السماوي بحال التصويرة */
+            background-image: linear-gradient(to bottom, #ffffff 20%, var(--accent-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.5));
+            text-transform: uppercase;
+        }
+
+        /* أزرار التحكم (الأسهم والمعينات) */
+        .epic-slider-controls {
+            position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 4; display: flex; align-items: center; gap: 40px;
+        }
+
+        .nav-arrow {
+            background: none; border: none; color: rgba(255,255,255,0.4);
+            font-size: 1.5rem; cursor: pointer; transition: color 0.3s, transform 0.3s;
+        }
+
+        .nav-arrow:hover { color: var(--accent-primary); transform: scale(1.2); }
+
+        .nav-diamonds { display: flex; gap: 18px; align-items: center; }
+
+        .diamond {
+            width: 8px; height: 8px; background-color: rgba(255,255,255,0.3);
+            transform: rotate(45deg); cursor: pointer; transition: all 0.3s ease;
+        }
+
+        .diamond:hover { background-color: rgba(255,255,255,0.8); }
+
+        .diamond.active {
+            background-color: var(--accent-primary);
+            box-shadow: 0 0 10px var(--accent-primary);
+            position: relative;
+        }
+        
+        /* نقطة بيضاء وسط المعين النشط */
+        .diamond.active::after {
+            content: ''; position: absolute; top: 50%; left: 50%;
+            width: 3px; height: 3px; background: #fff; border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @media (max-width: 768px) {
+            .epic-slider-container { height: 350px; }
+            .slide-title { font-size: 2rem; }
+            .slide-subtitle { font-size: 0.8rem; }
+            .epic-slide-content { bottom: 50px; }
+            .epic-slider-controls { gap: 20px; bottom: 15px;}
+        }
+
+/* --- FEATURES SECTION (SPACE SCIFI THEME) --- */
+        .features-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+            gap: 40px; 
+            padding-top: 20px;
+        }
+
+        .feature-card {
+            background: rgba(14, 14, 20, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 50px 30px; 
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px; /* حواف دائرية احترافية */
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1;
+        }
+
+        /* أنيماسيون السديم الفضائي (دوران الإضاءة خلف البطاقة) */
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0%,
+                transparent 70%,
+                rgba(0, 240, 255, 0.15) 80%,
+                rgba(230, 57, 70, 0.15) 100%
+            );
+            animation: rotate-nebula 6s linear infinite;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        /* تفاعل البطاقة عند مرور الماوس */
+        .feature-card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(0, 240, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 240, 255, 0.1);
+        }
+
+        .feature-card:hover::before { opacity: 1; }
+
+        @keyframes rotate-nebula {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* تصميم الأيقونات الاحترافي (Hologram Effect) */
+        .icon-container {
+            position: relative;
+            width: 90px; height: 90px;
+            margin: 0 auto 30px auto;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* الحلقة الدوارة حول الأيقونة */
+        .hologram-ring {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: 50%;
+            border: 2px dashed rgba(0, 240, 255, 0.2);
+            animation: spin-ring 15s linear infinite;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover .hologram-ring {
+            border-color: rgba(0, 240, 255, 0.8);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3) inset;
+            animation-duration: 5s; /* تسرع الحلقة عند مرور الماوس */
+        }
+
+        @keyframes spin-ring {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+/* الأيقونة نفسها (لون متدرج ومضيء) */
+.feature-icon {
+    font-size: 2.5rem;
+    background-image: linear-gradient(135deg, #ffffff, var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.4));
+    transition: all 0.3s ease;
+    z-index: 2;
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.15);
+    background-image: linear-gradient(135deg, #ffffff, var(--accent-primary)); /* تتغير للأحمر */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 15px rgba(230, 57, 70, 0.6));
+}
+/* --- ENHANCED INTERCEPTED DOSSIER STYLES --- */
+.transmission-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+    padding-top: 40px;
+}
+
+.dossier-card {
+    position: relative;
+    background: rgba(10, 11, 15, 0.95);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    padding: 40px 30px 30px;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+    transition: all 0.4s ease;
+    overflow: hidden;
+}
+
+/* Scanline Effect */
+.dossier-card::before {
+    content: " ";
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    background-size: 100% 3px, 3px 100%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.dossier-card:hover {
+    border-color: var(--accent-secondary);
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.15);
+    transform: translateY(-5px);
+}
+
+/* Signal Status Header */
+.signal-status {
+    position: absolute;
+    top: 15px; left: 20px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: var(--accent-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: uppercase;
+}
+
+.signal-dot {
+    width: 6px; height: 6px;
+    background-color: var(--accent-secondary);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--accent-secondary);
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+.dossier-content {
+    position: relative;
+    z-index: 3;
+}
+
+.dossier-quote {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #fff;
+    font-style: italic;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.dossier-quote::before {
+    content: '"';
+    font-family: serif;
+    font-size: 4rem;
+    position: absolute;
+    top: -20px; left: -15px;
+    opacity: 0.1;
+    color: var(--accent-secondary);
+}
+
+.dossier-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dossier-author {
+    font-family: var(--font-heading);
+    color: var(--accent-primary);
+    letter-spacing: 2px;
+    font-size: 1rem;
+}
+
+.dossier-id {
+    font-family: monospace;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+}
+  /* --- REVIEWS GRID & CARDS BASE STYLES --- */
+        .reviews-grid {
+            display: grid;
+            /* هاد السطر هو لي كيخليهم يجيو 3 د البطاقات حدا بعضياتهم فالبيسي */
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            padding-top: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .cyber-review-card {
+            position: relative;
+            background: rgba(14, 14, 20, 0.8); /* لون خلفية مظلم وشفاف شوية */
+            backdrop-filter: blur(10px); /* تأثير الزجاج */
+            -webkit-backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: 12px; /* زوايا دائرية */
+            border: 1px solid rgba(255, 255, 255, 0.05); /* إطار خفيف */
+            
+            /* خطوط الفوق والتحت كيتسناو الهوفر (Hover) باش يبدلو اللون */
+            border-top: 3px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            z-index: 1;
+        }
+/* تأثير ضوئي كيتحرك فالخلفية ديال البطاقة */
+        .cyber-review-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.1) 0%, transparent 60%);
+            opacity: 0; transition: opacity 0.5s ease;
+            z-index: -1; pointer-events: none;
+        }
+
+        /* الأنيماسيون ملي تحط الماوس */
+        .cyber-review-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8);
+            border-top-color: var(--accent-primary);
+            border-bottom-color: var(--accent-secondary);
+        }
+
+        .cyber-review-card:hover::before {
+            opacity: 1;
+            animation: pulse-glow 3s linear infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+
+        /* علامة التنصيص الكبيرة فالخلفية */
+        .quote-bg {
+            position: absolute; top: 15px; right: 20px;
+            font-size: 5rem; color: rgba(255, 255, 255, 0.03);
+            z-index: 0; transition: all 0.4s ease;
+        }
+
+        .cyber-review-card:hover .quote-bg {
+            color: rgba(0, 240, 255, 0.1);
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        /* تنسيق النجوم، النص، والكاتب */
+
+        
+/* --- REVIEWER PROFILE (AVATAR + NAME) --- */
+        .reviewer-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px; /* المسافة بين التصويرة والسمية */
+            margin-top: auto; /* باش ديما يبقاو لاصقين لتحت ديال البطاقة */
+            padding-top: 20px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1); /* خط متقطع خفيف بيفصل النص على البروفايل */
+            position: relative;
+            z-index: 2;
+        }
+
+        .reviewer-avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%; /* باش تجي ضايرة */
+            object-fit: cover;
+            border: 2px solid var(--accent-secondary); /* إطار سماوي */
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); /* توهج خفيف للتصويرة */
+            transition: all 0.3s ease;
+        }
+
+        /* ملي تحط الماوس على البطاقة كاملة، التصويرة كتشعل */
+        .cyber-review-card:hover .reviewer-avatar {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.5);
+            transform: scale(1.1);
+        }
+
+        .reviewer-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* قادينا السمية باش تجي متناسقة مع التصويرة */
+        .cyber-review-card .reviewer-name {
+            font-family: var(--font-heading); 
+            color: var(--accent-secondary);
+            font-size: 1.1rem; 
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+        }
+
+        /* حيدنا داك الخط الأحمر لي كان قبل السمية حيت التصويرة دابا كافية */
+        .cyber-review-card .reviewer-name::before {
+            display: none;
+        }
+      
+
+/* --- FAQ SECTION (CYBER SCI-FI STYLE) --- */
+        .faq-container { max-width: 850px; margin: 0 auto; }
+        
+        .faq-item {
+            background: linear-gradient(145deg, rgba(20, 20, 26, 0.8) 0%, rgba(10, 10, 15, 0.95) 100%);
+            border-left: 3px solid var(--accent-primary); /* شريط أحمر فالجنب */
+            margin-bottom: 20px;
+            /* زوايا مقطوعة بحال الألعاب */
+            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        /* توهج داخلي خفيف ملي تحط الماوس */
+        .faq-item::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            box-shadow: inset 0 0 20px rgba(0, 240, 255, 0);
+            transition: all 0.4s ease; pointer-events: none; z-index: 0;
+        }
+
+        /* ملي كتحط الماوس على السؤال */
+        .faq-item:hover {
+            transform: translateX(10px); /* كيكحز لليمين شوية */
+            border-left-color: var(--accent-secondary); /* الشريط كيولي سماوي */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .faq-item:hover::before {
+            box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.1);
+        }
+
+        /* ملي كتحل السؤال */
+        .faq-item[open] {
+            border-left-color: var(--accent-secondary);
+            background: linear-gradient(145deg, rgba(25, 25, 35, 0.9) 0%, rgba(15, 15, 20, 0.95) 100%);
+        }
+
+        .faq-summary {
+            padding: 25px 30px; font-family: var(--font-heading); font-size: 1.3rem;
+            cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center;
+            color: #fff; letter-spacing: 1px; transition: all 0.3s;
+            position: relative; z-index: 1;
+        }
+
+        /* إخفاء السهم الافتراضي ديال المتصفح */
+        .faq-summary::-webkit-details-marker { display: none; } 
+
+        .faq-summary:hover {
+            color: var(--accent-secondary);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+        }
+
+        /* أيقونة (+) اللي على اليمين */
+        .faq-summary::after {
+            content: '\f067'; /* كود ديال الفونط أوسوم (علامة زائد) */
+            font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            color: var(--accent-primary); font-size: 1.2rem;
+            background: rgba(230, 57, 70, 0.1);
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* ملي كتحل السؤال: علامة (+) كدور، كتولي (x)، وكتولي مضيئة */
+        .faq-item[open] .faq-summary::after {
+            transform: rotate(135deg); 
+            color: #000; 
+            background: var(--accent-secondary);
+            box-shadow: 0 0 15px var(--accent-secondary);
+        }
+
+        /* محتوى الجواب */
+        .faq-content {
+            padding: 0 30px 25px; color: #b3b3cc; font-size: 1.05rem; line-height: 1.7;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1); margin-top: 5px; padding-top: 20px;
+            position: relative; z-index: 1;
+            /* أنيماسيون ملي كيبان الجواب */
+            animation: cyber-fade-in 0.4s ease-out forwards;
+        }
+
+        @keyframes cyber-fade-in {
+            from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+/* --- BOTTOM CTA (WITH VIDEO BG) --- */
+        .bottom-cta {
+            position: relative;
+            text-align: center; 
+            padding: 150px 20px; 
+            overflow: hidden;
+            border-top: 1px solid rgba(230, 57, 70, 0.2);
+            background-color: var(--bg-base);
+        }
+
+        /* تنسيق الفيديو باش يغطي الشاشة كاملة */
+        .cta-video-bg {
+            position: absolute; top: 50%; left: 50%; 
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto; 
+            transform: translateX(-50%) translateY(-50%);
+            object-fit: cover; z-index: 0;
+            filter: contrast(1.1) brightness(0.8); /* باش يبان الفيديو سينمائي شوية */
+        }
+
+        /* طبقة التظليل متدرجة من الكحل (باش تندمج مع الفوق والتحت) للشفاف فالوسط */
+        .cta-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, var(--bg-base) 0%, rgba(7, 7, 10, 0.5) 50%, #000 100%);
+            z-index: 1;
+        }
+
+        /* رفع المحتوى فوق الفيديو */
+        .cta-content {
+            position: relative; z-index: 2;
+        }
+
+        .bottom-cta h2 { 
+            font-size: 3.5rem; 
+            margin-bottom: 25px; 
+            animation: float 6s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(0, 240, 255, 0.2); 
+            letter-spacing: 3px;
+        }
+
+        .bottom-cta p:not(.section-subtitle) { 
+            margin-bottom: 45px; 
+            color: #fff; 
+            font-size: 1.2rem; 
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.9); /* ضل كحل باش تبان الكتابة فوق الفيديو */
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center; padding: 40px 20px; background-color: #000;
+            color: var(--text-muted); font-size: 0.8rem; border-top: 1px solid #111;
+        }
+        .footer-links a { color: var(--text-muted); margin: 0 10px; transition: color 0.2s;}
+        .footer-links a:hover { color: var(--accent-secondary); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 990px) {
+            .nav-links { display: none; }
+        }
+        @media (max-width: 768px) {
+            .nav-logo { font-size: 1.4rem; }
+            .nav-btn { padding: 8px 16px; font-size: 0.85rem; }
+            .nav-container { padding: 10px 15px; }
+            .hero h1 { font-size: 2.5rem; }
+            .section-title { font-size: 2rem; }
+            .gallery-main { height: 300px; }
+            .thumb { width: 100px; height: 60px; }
+        }
+
+/* --- FAKE DOWNLOAD POPUP STYLES --- */
+        .download-popup {
+            position: fixed;
+            bottom: 30px;
+            left: 30px; /* غيبان لتحت فاليسار */
+            background: rgba(10, 11, 15, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-left: 4px solid var(--accent-secondary); /* شريط سماوي فالجنب */
+            padding: 15px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 240, 255, 0.15);
+            z-index: 9999;
+            /* هاد الجوج سطورا هما لي كيخليوه مخبي فالأول وكيتحرك بسلاسة */
+            transform: translateX(-150%);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* حركة بحال الـ Bounce */
+            pointer-events: none; /* باش ما يبرزطش الزائر يلا بغا يكليكي على شي حاجة تحتو */
+        }
+
+        /* هاد الكلاس هو لي كيبينو ملي كنزيدوه بالجافاسكريبت */
+        .download-popup.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .popup-icon {
+            background: rgba(0, 240, 255, 0.1);
+            color: var(--accent-secondary);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            animation: pulse-icon 2s infinite; /* تأثير النبض */
+        }
+
+        .popup-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .popup-name {
+            color: var(--text-white);
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+        }
+
+        .popup-action {
+            color: #b3b3cc;
+            font-size: 0.9rem;
+            margin-top: -2px;
+        }
+
+        .popup-time {
+            color: var(--accent-primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <img src="https://www.oncehuman.game/pc/fab/20250114111146/img/logo_ba7fbc56.png" alt="Once Human Logo">
+            </a>
+            
+            <!-- الروابط في الوسط -->
+            <div class="nav-links">
+                <a href="#trailer">Trailer</a>
+                <a href="#features">Features</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#reviews">Reviews</a>
+                <a href="#faq">FAQ</a>
+            </div>
+            
+            <!-- الزر على اليمين -->
+            <a href="#download" class="nav-btn">Play for Free Now</a>
+        </div>
+    </nav>
+
+    
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <!-- Video Background -->
+        <video class="hero-video-bg" autoplay loop muted playsinline>
+            <source src="https://oncehuman.v.easebar.com/2026/0119/20260119.mp4" type="video/mp4">
+        </video>
+        <!-- Dark Overlay -->
+        <div class="hero-overlay"></div>
+        <!-- Stardust Canvas -->
+        <canvas id="particles-js"></canvas> 
+        <!-- Content -->
+        <div class="container hero-content reveal">
+            <h1>Survive the <span class="highlight-text">Unthinkable</span>.<br>Forge Your Path.</h1>
+            <p>Join millions of players in the ultimate weird-survival multiplayer game. Gather resources, build your territory, and lead your Deviation pals in a corrupted world.</p>
+            
+            <a href="#download" class="btn">Install Free on PC</a>
+            
+            <div class="stars" style="margin-top:25px; color: var(--star-color); text-shadow: 0 0 10px rgba(0,0,0,0.8);">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                <span style="color:#ddd; margin-left:10px; font-family:var(--font-body); font-size:0.95rem;">4.8/5 Rating • 10M+ Downloads</span>
+            </div>
+        </div>
+    </section>
+
+<!-- VIDEO TRAILER SECTION -->
+<section id="trailer" class="bg-alt has-divider">
+        <div class="container reveal">
+            <h2 class="section-title">Aberrant Progeny</h2>
+            <p class="section-subtitle">Watch the Season 3 Gameplay Showcase</p>
+            
+            <!-- صورة التريلر مع زر التشغيل -->
+            <div class="trailer-thumbnail-wrapper" id="playTrailerBtn">
+                <!-- صورة الخلفية (تقدر تبدلها بصورة من اللعبة) -->
+                <img src="https://i.postimg.cc/nrgD7Ptg/ph.jpg" alt="Trailer Thumbnail" class="trailer-bg">
+                <div class="play-overlay"></div>
+                <!-- أيقونة التشغيل المخصصة (الصورة ديالك) -->
+                <div class="custom-play-btn">
+                    <!-- حط الرابط ديال الصورة ديالك بلاصة ديك (حط_الرابط_هنا) -->
+                    <img src="https://www.oncehuman.game/pc/fab/20250114111146/img/play_965a9970.png" alt="Play Trailer Icon">
+                </div>
+            </div>
+
+            <p style="text-align: center; color: var(--text-muted); font-size: 0.95rem; margin-top: 20px;">
+                Experience massive boss fights, base building, and PvPvE action.
+            </p>
+        </div>
+    </section>
+
+<!-- VIDEO MODAL (POPUP) -->
+    <!-- مسحنا السطر ديال السيكشن اللي كان زايد هنا -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <!-- زر الإغلاق (صورة مخصصة) -->
+            <div class="close-modal">
+                <img src="https://www.oncehuman.game/pc/fab/20250114111146/img/close_ae51ee22.png" alt="Close">
+            </div>
+            <div class="video-responsive-container" id="iframeContainer">
+                <!-- الفيديو غيتحط هنا بالسكربت ملي يبرك الزائر -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- FEATURES SECTION -->
+    <section id="features" class="has-divider">
+        <div class="container">
+            <h2 class="section-title reveal">Survival Evolved</h2>
+            <p class="section-subtitle reveal">Why millions are playing</p>
+            
+            <div class="features-grid">
+                <div class="feature-card reveal delay-1">
+                    <i class="fas fa-ghost feature-icon"></i>
+                    <h3>Lead Deviation Pals</h3>
+                    <p>Capture bizarre, powerful entities known as Deviations to assist you in combat, gather resources, or power your intricate base operations.</p>
+                </div>
+                
+                <div class="feature-card reveal delay-2">
+                    <i class="fas fa-hammer feature-icon"></i>
+                    <h3>Unrestricted Building</h3>
+                    <p>Construct massive, highly detailed strongholds anywhere in the open world. Defend your territory against hordes of aberrant creatures.</p>
+                </div>
+                
+                <div class="feature-card reveal delay-3">
+                    <i class="fas fa-globe-americas feature-icon"></i>
+                    <h3>Weird Open World</h3>
+                    <p>Explore a seamless, post-apocalyptic map corrupted by alien Stardust. Scavenge for survival in ruined cities and shifting dimensions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SCREENSHOTS SECTION -->
+    <section class="bg-alt has-divider" id="gallery">
+        <div class="container reveal">
+            <!-- خلينا العناوين الفوقانية باش يبقى التناسق مع باقي الموقع -->
+            <h2 class="section-title">Visual Archive</h2>
+            <p class="section-subtitle">Glimpses of a fallen world</p>
+            
+            <div class="epic-slider-container">
+                <!-- شرائح الصور -->
+                <div class="epic-slides">
+                    <!-- الصورة الأولى (بدل الرابط بصورة من اللعبة) -->
+                    <div class="epic-slide active" style="background-image: url('https://www.oncehuman.game/pc/fab/20250114111146/img/img-2_b501c895.png');">
+                        <div class="epic-slide-overlay"></div>
+                        <div class="epic-slide-content">
+                            <h4 class="slide-subtitle">BEWARE OF DEVIANTS LURKING IN THE APOCALYPSE</h4>
+                            <h2 class="slide-title">EMBRACE THE UNKNOWN</h2>
+                        </div>
+                    </div>
+                    
+                    <!-- الصورة الثانية -->
+                    <div class="epic-slide" style="background-image: url('https://www.oncehuman.game/pc/fab/20250114111146/img/img-3_04f56fbc.png');">
+                        <div class="epic-slide-overlay"></div>
+                        <div class="epic-slide-content">
+                            <h4 class="slide-subtitle">BUILD YOUR MASSIVE STRONGHOLD ANYWHERE</h4>
+                            <h2 class="slide-title">UNRESTRICTED SURVIVAL</h2>
+                        </div>
+                    </div>
+
+                    <!-- الصورة الثالثة -->
+                    <div class="epic-slide" style="background-image: url('https://www.oncehuman.game/pc/fab/20250114111146/img/img-1_759a48d4.png');">
+                        <div class="epic-slide-overlay"></div>
+                        <div class="epic-slide-content">
+                            <h4 class="slide-subtitle">GATHER YOUR ALLIES AND WEAPONS</h4>
+                            <h2 class="slide-title">FIGHT THE CORRUPTION</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- أزرار التحكم (الأسهم والمعينات) -->
+                <div class="epic-slider-controls">
+                    <button class="nav-arrow left-arrow" onclick="prevEpicSlide()"><i class="fas fa-chevron-left"></i></button>
+                    <div class="nav-diamonds">
+                        <div class="diamond active" onclick="goToEpicSlide(0)"></div>
+                        <div class="diamond" onclick="goToEpicSlide(1)"></div>
+                        <div class="diamond" onclick="goToEpicSlide(2)"></div>
+                    </div>
+                    <button class="nav-arrow right-arrow" onclick="nextEpicSlide()"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<!-- TESTIMONIALS SECTION -->
+  
+  <!-- INTERCEPTED TRANSMISSIONS SECTION -->
+     <section id="reviews" class="has-divider">
+        <div class="container">
+            <h2 class="section-title reveal">Transmissions</h2>
+            <p class="section-subtitle reveal">Intercepted comms from the frontier</p>
+            
+<div class="reviews-grid">
+                
+                <!-- Card 1 -->
+                <div class="cyber-review-card reveal delay-1">
+                    <i class="fas fa-quote-right quote-bg"></i>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="review-text">"I was looking for a game to get hooked on, and I got totally lost in Once Human. The game has an incredible balance between exploration, combat, and resource gathering."</p>
+                    
+                    <div class="reviewer-profile">
+                        <!-- تصويرة روبوت سايبربانك -->
+                        <img src="https://robohash.org/nexus.png?set=set3&bgset=bg1" alt="Gaming Nexus" class="reviewer-avatar">
+                        <div class="reviewer-details">
+                            <div class="reviewer-name">GAMING NEXUS</div>
+                            <span class="dossier-id">ID: #009-X</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 2 -->
+                <div class="cyber-review-card reveal delay-2">
+                    <i class="fas fa-quote-right quote-bg"></i>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="review-text">"The game becomes doubly enjoyable when you play with friends. We joined a server together, built our own city, and started raiding the big bosses. Unforgettable moments!"</p>
+                    
+                    <div class="reviewer-profile">
+                        <img src="https://robohash.org/apex.png?set=set3&bgset=bg1" alt="ApexSurvivor" class="reviewer-avatar">
+                        <div class="reviewer-details">
+                            <div class="reviewer-name">APEXSURVIVOR99</div>
+                            <span class="dossier-id">ID: #442-T</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 3 -->
+                <div class="cyber-review-card reveal delay-3">
+                    <i class="fas fa-quote-right quote-bg"></i>
+                    <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="review-text">"A massive breath of fresh air in the survival genre. The 'weird' aesthetic really works, and gunplay is tight. The atmosphere makes you fall in love with its weirdness."</p>
+                    
+                    <div class="reviewer-profile">
+                        <img src="https://robohash.org/mmo.png?set=set3&bgset=bg1" alt="MMO Pulse" class="reviewer-avatar">
+                        <div class="reviewer-details">
+                            <div class="reviewer-name">MMO PULSE</div>
+                            <span class="dossier-id">ID: #108-M</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+    </section>
+  
+
+<!-- FAQ SECTION -->
+    <section class="bg-alt has-divider" id="faq">
+        <div class="container faq-container reveal">
+            <h2 class="section-title">Common Questions</h2>
+            <p class="section-subtitle">New player orientation</p>
+            
+            <details class="faq-item">
+                <summary class="faq-summary">1. What is Twitch Drops?</summary>
+                <div class="faq-content">Twitch Drops is an event where you can obtain in-game rewards just by watching Twitch live streams. To participate in Twitch Drops, you only need to link your Twitch account to your Once Human account. If you have not yet linked your Twitch account and your Once Human account, please do so within one week after the end of the current Twitch Drops event. If the deadline is exceeded, it will no longer be possible to claim the rewards.</div>
+            </details>
+            
+            <details class="faq-item">
+                <summary class="faq-summary">2. Which live streams do I need to watch to obtain the rewards?</summary>
+                <div class="faq-content">Currently, Once Human is available to play on PC via a dedicated client or Steam. Mobile versions are in development.</div>
+            </details>
+            
+            <details class="faq-item">
+                <summary class="faq-summary">3. How do I confirm that I have successfully participated in Twitch Drops?</summary>
+                <div class="faq-content">You can view the Twitch Drops events you have participated in on the Twitch Drops page. You can also confirm all ongoing events and the channels you have joined in the Twitch Inventory..</div>
+            </details>
+            
+                         <details class="faq-item">
+                <summary class="faq-summary">4. How long will it take to receive the Drops reward?</summary>
+                <div class="faq-content">Rewards will be delivered to your in-game mailbox within 24 hours.</div>
+                 </details>
+
+                        <details class="faq-item">
+                <summary class="faq-summary">5. I have two game accounts, can I receive the rewards more than once?</summary>
+                <div class="faq-content">You are unable to receive Twitch Drops rewards repeatedly. A Twitch account can only be linked to one Once Human account and one chracter. The same Once Human account can only collect the same types of rewards once, and the same Twitch account can only claim the same types of rewards once.</div>
+            </details>
+
+                        <details class="faq-item">
+                <summary class="faq-summary">6. How can I apply to be a content creator for the Once Human official release Twitch Drops events?</summary>
+                <div class="faq-content">Please check this rule page to find more if you want to become part of the CC program!</div>
+            </details>
+
+        </div>
+    </section>
+
+<!-- BOTTOM CTA SECTION -->
+    <section class="bottom-cta reveal" id="download">
+        <!-- فيديو الخلفية (تقدر تبدل الرابط ديالو يلا بغيتي فيديو آخور) -->
+        <video class="cta-video-bg" autoplay loop muted playsinline>
+            <source src="https://oh.fp.ps.easebar.com/file/67da65c8d0a7b9705e0f426eKK98HNZM03" type="video/mp4">
+        </video>
+        
+        <!-- طبقة التظليل المتدرجة -->
+        <div class="cta-overlay"></div>
+        
+        <!-- المحتوى (النص والزر) -->
+        <div class="container cta-content">
+            <p class="section-subtitle" style="margin-bottom: 15px; color: var(--accent-secondary); text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);">The Stardust is spreading...</p>
+            <h2>YOUR DEVIATION AWAITS</h2>
+            <p>Don't face the apocalypse alone. Download now to claim your starting gear.</p>
+            <a href="#download" class="btn">Install Free Now</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 NetEase Games. All Rights Reserved.</p>
+            <div class="footer-links" style="margin-top:10px;">
+                <a href="#">Privacy</a> | <a href="#">Terms</a> | <a href="#">Support</a>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- FAKE DOWNLOAD POPUP -->
+    <div id="download-popup" class="download-popup">
+        <div class="popup-icon">
+            <i class="fas fa-download"></i>
+        </div>
+        <div class="popup-content">
+            <span class="popup-name" id="popup-name">ShadowHunter</span>
+            <span class="popup-action">just installed Once Human</span>
+            <span class="popup-time">A few seconds ago</span>
+        </div>
+    </div>
+
+    <!-- SCRIPTS FOR LOGIC & ANIMATIONS -->
+    <script>
+   // 1. Epic Slider Gallery Logic
+        let currentEpicSlide = 0;
+        const epicSlides = document.querySelectorAll('.epic-slide');
+        const diamonds = document.querySelectorAll('.diamond');
+        let slideInterval;
+
+        function showEpicSlide(index) {
+            // إخفاء كاع الصور والمعينات
+            epicSlides.forEach(slide => slide.classList.remove('active'));
+            diamonds.forEach(dot => dot.classList.remove('active'));
+            
+
+            currentEpicSlide = index;
+            if (currentEpicSlide >= epicSlides.length) currentEpicSlide = 0;
+            if (currentEpicSlide < 0) currentEpicSlide = epicSlides.length - 1;
+            
+            epicSlides[currentEpicSlide].classList.add('active');
+            diamonds[currentEpicSlide].classList.add('active');
+        }
+
+        function nextEpicSlide() {
+            showEpicSlide(currentEpicSlide + 1);
+            resetSlideInterval(); 
+        }
+
+        function prevEpicSlide() {
+            showEpicSlide(currentEpicSlide - 1);
+            resetSlideInterval();
+        }
+
+        function goToEpicSlide(index) {
+            showEpicSlide(index);
+            resetSlideInterval();
+        }
+
+        function startSlideInterval() {
+            slideInterval = setInterval(nextEpicSlide, 5000); // كتبدل التصويرة كل 5 ثواني
+        }
+
+        function resetSlideInterval() {
+            clearInterval(slideInterval);
+            startSlideInterval();
+        }
+
+        startSlideInterval();
+
+        // 2. Scroll Reveal Animation Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        });
+
+        // 3. Stardust Particle Canvas Logic
+        const canvas = document.getElementById('particles-js');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = document.querySelector('.hero').offsetHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2;
+                this.speedY = Math.random() * -0.5 - 0.1;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                if (this.y < 0) this.y = height;
+                if (this.x < 0) this.x = width;
+                if (this.x > width) this.x = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(0, 240, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < 100; i++) particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        // 4. Navbar Scroll Effect Logic
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+
+ <script> 
+         // 5. Video Modal Logic
+        const videoModal = document.getElementById('videoModal');
+        const playTrailerBtn = document.getElementById('playTrailerBtn');
+        const closeModalBtn = document.querySelector('.close-modal');
+        const iframeContainer = document.getElementById('iframeContainer');
+
+        const videoUrl = "https://oh.fp.ps.easebar.com/file/67da65f88dd609613e97246fWxQBsscs03";
+
+        playTrailerBtn.addEventListener('click', () => {
+            videoModal.style.display = 'flex';
+
+            iframeContainer.innerHTML = `
+                <iframe 
+                    src="${videoUrl}?autoplay=1" 
+                    title="Once Human Gameplay Trailer"
+                    frameborder="0"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            `;
+            document.body.style.overflow = 'hidden'; // باش نحبسو السكرول ديال الصفحة
+        });
+
+        // دالة باش نسدو المودال
+        const closeVideoModal = () => {
+            videoModal.style.display = 'none';
+            iframeContainer.innerHTML = ''; // كنخويو الـ iframe باش يحبس الصوت
+            document.body.style.overflow = 'auto'; // كنرجعو السكرول
+        };
+
+        // ملي يبرك على علامة (X)
+        closeModalBtn.addEventListener('click', closeVideoModal);
+
+        // ملي يبرك الزائر برا ديال الفيديو (فالخلفية الكحلة)
+        window.addEventListener('click', (e) => {
+            if (e.target === videoModal) {
+                closeVideoModal();
+            }
+        });
+ </script>
+<script>
+ // 6. Fake Download Pop-Up Logic
+        const fakeNames =[
+            "VXGAMA", "Toxi5005", "Ghost_Reaper7", "ApexPredator", 
+            "NeonSamurai", "DARKREALM", "Stardust_01", "VenomStrike", 
+            "Nightmare_X", "IronClad_PC", "VoidWalker", "CrimsonDemon", 
+            "SoulTaker", "RogueAgent", "CyberPunk_Dude", "ZeroCool_88"
+        ];
+
+        const downloadPopup = document.getElementById('download-popup');
+        const popupNameEl = document.getElementById('popup-name');
+
+        function triggerFakePopup() {
+            // كنعزلو سمية عشوائية من الليستة
+            const randomName = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+            popupNameEl.textContent = randomName;
+
+            // كنبينو الـ Pop-up
+            downloadPopup.classList.add('show');
+
+            // كنخليوه يبان لمدة 3.5 ثواني، عاد كنخبيوه
+            setTimeout(() => {
+                downloadPopup.classList.remove('show');
+            }, 3500);
+        }
+
+        // باش يبان طبيعي: كيبدا مورا 2 ثواني من فتح الصفحة
+        setTimeout(() => {
+            triggerFakePopup();
+            
+            // ومن بعد كيبقى يتعاود كل 6.5 ثواني 
+            // (يعني كيبان 3.5 ثواني، وكيغبر 3 ثواني، باش مايجيش معيق ومزعج)
+            setInterval(triggerFakePopup, 6500); 
+        }, 2000);
+</script>
+</body>
+</html>
