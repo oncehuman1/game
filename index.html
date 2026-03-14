@@ -27,7 +27,7 @@
             cursor: url('https://i.postimg.cc/bvdf7LMj/C1.png') 16 16, auto !important;
         }
 
-        a, .btn, .nav-btn, .trailer-thumbnail-wrapper, .faq-summary, .diamond, .nav-arrow, .close-modal {
+        a, .btn, .nav-btn, .trailer-thumbnail-wrapper, .faq-summary, .diamond, .nav-arrow, .close-modal  {
             cursor: url('https://i.postimg.cc/jSyCmxpj/k1.png') 16 16, pointer !important;
         }
 
@@ -1022,6 +1022,123 @@
         .footer-links a { color: var(--text-muted); margin: 0 10px; transition: color 0.2s;}
         .footer-links a:hover { color: var(--accent-secondary); }
 
+/* الخلفية الكحلة مع تأثير الضباب (Blur) */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 9999; 
+  left: 0; top: 0;
+  width: 100%; height: 100%; 
+  background-color: rgba(2, 10, 20, 0.85); /* كحل مايل للزرق */
+  backdrop-filter: blur(4px); /* تأثير Sci-Fi زاجي */
+}
+
+/* المربع ديال البوباب */
+.modal-content {
+  background: linear-gradient(135deg, rgba(2, 26, 36, 0.95) 0%, rgba(6, 56, 74, 0.95) 100%);
+  margin: 5% auto; 
+  padding: 40px 10px 20px 30px; 
+  border: 1px solid #00e5ff;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.2), inset 0 0 20px rgba(0, 229, 255, 0.1);
+  width: 80%; 
+  max-width: 800px;
+  border-radius: 6px; 
+  color: #a4e4e8; 
+  font-family: 'Arial', sans-serif;
+  position: relative;
+  overflow: hidden; /* باش الزر X ميهبطش */
+  animation: hologramPopup 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* الكلاس الجديد لي غيخلي غير النص بوحدو لي يسكرولي */
+.modal-body {
+  max-height: 70vh; 
+  overflow-y: auto; 
+  padding-right: 20px;
+  line-height: 1.6;
+}
+
+/* أنيماسيون الخروج Sci-Fi (ملي كيتسد البوباب) */
+@keyframes hologramPopOut {
+  from { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  to { opacity: 0; transform: translateY(-30px) scale(0.95); filter: blur(5px); }
+}
+
+/* كلاس غنزيدوه بالجافاسكريبت باش يخدم أنيماسيون الخروج */
+.modal.closing .modal-content {
+  animation: hologramPopOut 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ستايل السكرول ديال النص */
+.modal-body::-webkit-scrollbar { width: 6px; }
+.modal-body::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); border-radius: 10px; }
+.modal-body::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 10px; box-shadow: 0 0 8px #00e5ff; }
+  
+  /* الأنيماسيون ديال الدخول */
+  animation: hologramPopup 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* خط ضاوي الفوق كيعطي لمسة تيكنولوجية */
+.modal-content::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+  height: 3px;
+  background: #00e5ff;
+  box-shadow: 0 0 15px #00e5ff;
+}
+
+/* كود الأنيماسيون Sci-Fi */
+@keyframes hologramPopup {
+  from { 
+      opacity: 0; 
+      transform: translateY(40px) scale(0.95); 
+      filter: blur(5px);
+  }
+  to { 
+      opacity: 1; 
+      transform: translateY(0) scale(1); 
+      filter: blur(0);
+  }
+}
+
+/* العناوين */
+.modal-content h2, .modal-content h3, .modal-content h4 {
+  color: #00e5ff; 
+  text-transform: uppercase; 
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+}
+
+/* Scrollbar جديد رقيق وانيق */
+.modal-content::-webkit-scrollbar { width: 6px; }
+.modal-content::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); border-radius: 10px; }
+.modal-content::-webkit-scrollbar-thumb { background: #00e5ff; border-radius: 10px; box-shadow: 0 0 8px #00e5ff; }
+
+/* زر الإغلاق X */
+.close-btn {
+  display: none;
+  color: #ff0044; 
+  position: absolute; /* باش يبقى ديما الفوق على ليمن واخا تسكرولي */
+  top: 15px;
+  right: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  line-height: 1;
+}
+
+/* أنيماسيون لزر X ملي تحط عليه السوري */
+.close-btn:hover {
+  color: #fff;
+  text-shadow: 0 0 15px #ff0044, 0 0 30px #ff0044;
+  transform: scale(1.2) rotate(90deg); /* كيكبر وكيدور بحال شي قفل ميكانيكي */
+}
+
         /* --- RESPONSIVE --- */
         @media (max-width: 990px) {
             .nav-links { display: none; }
@@ -1407,12 +1524,151 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
+<!-- FOOTER -->
     <footer>
         <div class="container">
-                <img src="https://i.postimg.cc/hGm0c3YP/T.png">
-            </a>
-            <p>&copy; 1997-2026 NetEase, Inc. All Rights Reserved</p>
+            <!-- اللوغو ديال الفوتر -->
+            <!-- اللوغو ديال الفوتر -->
+<img src="https://i.postimg.cc/TYc561Dd/3logo.png" style="width: 500px; margin-bottom: 15px; filter: grayscale(100%) opacity(0.7); transition: all 0.3s ease;" onmouseover="this.style.filter='grayscale(0%) opacity(1)'" onmouseout="this.style.filter='grayscale(100%) opacity(0.7)'">
+
+            <!-- الروابط ديال البوليسي -->
+            <div style="margin-bottom: 10px;">
+                <a href="#" id="openPrivacy" style="color: #a4e4e8; text-decoration: none; font-size: 0.9rem; transition: color 0.3s ease;" onmouseover="this.style.color='#00e5ff'" onmouseout="this.style.color='#a4e4e8'">Privacy Policy</a> 
+                <span style="color: #444; margin: 0 10px;">|</span> 
+                <a href="#" id="openTerms" style="color: #a4e4e8; text-decoration: none; font-size: 0.9rem; transition: color 0.3s ease;" onmouseover="this.style.color='#00e5ff'" onmouseout="this.style.color='#a4e4e8'">Terms of Service</a>
+            </div>
+
+            <!-- حقوق النشر لي بغيتي تزيد -->
+            <p style="color: #666; font-size: 0.8rem; letter-spacing: 1px; margin-top: 5px;">
+                &copy; 1997-2026 NetEase, Inc. All Rights Reserved
+            </p>
+
+<!-- ========================================== -->
+<!-- من هنا كيبدا الكود ديال البوبابات خليه كيما هو -->
+<!-- <div id="privacyModal" class="modal"> ... -->
+
+
+
+<!-- بوباب ديال Privacy Policy -->
+<div id="privacyModal" class="modal">
+  <div class="modal-content">
+    
+    <!-- زدنا هاد الديف باش يشد السكرول -->
+    <div class="modal-body">
+        <h2 style="text-align: center; border-bottom: 1px solid rgba(0, 229, 255, 0.3); padding-bottom: 10px;">NetEase Privacy Policy</h2>
+        <p style="font-size: 12px; text-align: center; opacity: 0.7;">Last Updated: March 6, 2025</p>
+        <h3 style="margin-top: 20px;">Welcome!</h3>
+        <p>This Privacy Policy provides you with information about how we collect, use, and share your personal information (sometimes called "personal data") when you use our Services that link to this Privacy Policy. It also explains your legal rights and choices associated with your personal information. Your access to and use of our Services is subject to the Terms of Use.</p>
+        <p>We may update this Privacy Policy again from time to time. By continuing to use the Services after this Privacy Policy has been updated, you acknowledge that personal information will be handled in accordance with the most recent version.</p>
+        <hr>
+        <h3>YOUR PERSONAL INFORMATION</h3>
+        <h4>Personal Information We Collect</h4>
+        <p>Personal information is any information or data that relates to you as an identified or identifiable individual. Below are the categories of personal information we collect about users of our Services:</p>
+        <ul style="margin-left: 20px; margin-bottom: 15px;">
+            <li><strong>Information You Provide:</strong> Depending on how you interact with us, we may ask you to provide identity, contact & demographic details, billing & transaction data, account & profile information, user-generated content, usage data & preferences, survey & research data, marketing preferences, and communications with us.</li>
+            <li><strong>Information We Collect Automatically:</strong> Location information (city / country / region based on IP address), Device, network & technical information, and Gameplay information (data related to how you play and actions you take in our games).</li>
+            <li><strong>Information We Collect from Third Parties:</strong> Social media or game platform account information (when you log in with a third-party account), and Payment information when you use a third-party payment processing service.</li>
+        </ul>
+        <p><em style="color:#ff0044;">Sensitive Information:</em> Please do not send us any sensitive information or "special category data" such as social security number, religion, political affiliation, sexual orientation, racial / ethnic information, criminal history, or trade union / association memberships.</p>
+        <h4>How We Use Personal Information</h4>
+        <p>We use personal information only for the purposes for which the information was collected. Under applicable data protection laws, companies also must have a legal basis to process your personal information. We process your data to:</p>
+        <ul style="margin-left: 20px; margin-bottom: 15px;">
+            <li>Operate and provide the Services to you (enabling downloads, customizing preferences, connecting users).</li>
+            <li>Troubleshoot and improve the Services and our business.</li>
+            <li>Promote the safety, security, and integrity of the Services (preventing fraud, moderating content).</li>
+            <li>Comply with legal obligations (age verification, responding to legal requests).</li>
+        </ul>
+        <h4>How We Share Personal Information</h4>
+        <p>We do not share your contact details with independent third parties without your knowledge, except for limited purposes as described in this Privacy Policy. <strong style="color: #00e5ff;">We do not sell your information.</strong> We may share personal information with:</p>
+        <ul style="margin-left: 20px; margin-bottom: 15px;">
+            <li>Social media and gaming platforms.</li>
+            <li>Service providers (cloud services, payment processors).</li>
+            <li>Related companies (NetEase-controlled affiliates).</li>
+            <li>Legal authorities for legal requirements and harm prevention.</li>
+        </ul>
+        <hr>
+        <h3>YOUR PRIVACY RIGHTS & CHOICES</h3>
+        <p>Depending on where you live, you may have some or all of the rights listed below in relation to your personal information:</p>
+        <ul style="margin-left: 20px; margin-bottom: 15px;">
+            <li><strong style="color: #00e5ff;">Access & Portability:</strong> Request access to or a copy of your personal information.</li>
+            <li><strong style="color: #00e5ff;">Deletion:</strong> Delete your personal information.</li>
+            <li><strong style="color: #00e5ff;">Correction:</strong> Correct or update your personal information where it's inaccurate.</li>
+            <li><strong style="color: #00e5ff;">Objection / Withdrawal:</strong> Object to processing or withdraw your consent.</li>
+        </ul>
+        <p>You may submit a request to exercise your privacy rights to us at <strong style="color: #ff0044;">personal_data_ne@global.netease.com</strong>.</p>
+        <h4>Cookies & Similar Technologies</h4>
+        <p>We use cookies and similar technologies to collect information such as browser type, time spent on the Services, pages visited, language preferences and other traffic data. You can manage cookie preferences through your browser settings.</p>
+        <hr>
+        <h3>INFORMATION FOR PARENTS & GUARDIANS</h3>
+        <p>Our Services are intended for a general audience. For certain Services that may appeal to younger players, we take measures to verify player ages, require verifiable parental consent for processing of children's personal information, and implement high privacy-by-default settings to protect children's privacy.</p>
+        <hr>
+        <h3>ABOUT US</h3>
+        <p>NetEase is made up of several different legal entities around the world. This Privacy Policy applies to Services offered by NetEase Interactive Entertainment Pte. Ltd. and its affiliates.</p>
+        <p>Our mailing address is: <strong>128 Beach Road, #19-01, Guoco MidTown, Singapore</strong>.<br>If you have any questions about this Privacy Policy, please email <strong style="color: #ff0044;">personal_data_ne@global.netease.com</strong>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- بوباب ديال Terms of Service -->
+<div id="termsModal" class="modal">
+  <div class="modal-content">
+    
+    <!-- زدنا هاد الديف باش يشد السكرول -->
+    <div class="modal-body">
+        <h2 style="text-align: center; border-bottom: 1px solid rgba(0, 229, 255, 0.3); padding-bottom: 10px;">NetEase Terms of Use</h2>
+        <p style="font-size: 12px; text-align: center; opacity: 0.7;">Last Updated: December 15, 2024</p>
+        
+        <div style="background-color: rgba(255, 0, 68, 0.1); padding: 15px; border-left: 4px solid #ff0044; margin: 20px 0; font-size: 12px; color: #ffcaea;">
+            <strong style="color: #ff0044;">IMPORTANT NOTICE:</strong> THESE TERMS REQUIRE DISPUTES, CONTROVERSIES, AND CLAIMS BETWEEN YOU AND NETEASE TO BE SUBMITTED TO BINDING AND FINAL ARBITRATION. UNLESS YOU OPT OUT OF THE ARBITRATION AGREEMENT. ALL DISPUTES WILL BE RESOLVED SOLELY ON AN INDIVIDUAL BASIS AND NOT AS A CLASS ARBITRATION. PLEASE READ SECTION 11 CAREFULLY.
+        </div>
+        <h3 style="margin-top: 20px;">1. Introduction</h3>
+        <p>Thank you for using NetEase's products and services. These Terms of Use ("Terms") reflect the way NetEase's business works, and defines our relationship with you as you interact with our products and services.</p>
+        <ul style="margin-left: 20px; margin-bottom: 15px;">
+            <li><strong style="color: #00e5ff;">About Us:</strong> Your relationship is with the publishing entity for the Services and Software you use.</li>
+            <li><strong style="color: #00e5ff;">Age Requirement:</strong> If you are a "Minor" under 18, you must have your parent or guardian's permission to use certain restricted features.</li>
+            <li><strong style="color: #00e5ff;">Privacy Policy:</strong> Your access and use of the Services is subject to our Privacy Policy.</li>
+        </ul>
+        <h3>2. Accounts</h3>
+        <p>You will make necessary efforts to protect your account information and keep it confidential. You may not share, sell or transfer your account. If you access the Services using a Third-Party Account (e.g., Apple, Discord, Facebook, Google), you should comply with their respective terms of use.</p>
+        <h3>3. Services & License</h3>
+        <p>Subject to your compliance with these Terms, we grant you a personal, revocable, non-assignable, non-transferable, and limited license to install, access, and use the Services and Software.</p>
+        <p><strong style="color: #ff0044;">Restrictions:</strong> You must not: (1) host or stream the Services; (2) allow unauthorized third parties to access the Services; (3) circumvent technological measures; (4) adapt, modify, reverse engineer, or decompile the Services or Software; (5) duplicate, rent, sell, or transfer your rights in the Services.</p>
+        <h3>4. User Conduct and Content</h3>
+        <p>You are responsible for any and all Content that you may provide via our Services. By using our Services, you agree that you will <strong style="color: #ff0044;">NOT</strong>:</p>
+        <ul style="margin-left: 20px; margin-bottom: 15px;">
+            <li>Provide any Content that is unlawful, harmful, threatening, abusive, defamatory, vulgar, or promotes hate.</li>
+            <li>Use cheats, automation software (bots), hacks, mods, or unauthorized third-party software.</li>
+            <li>Use our Services for commercial purposes or in a way that ruins fair play.</li>
+            <li>Attempt Real Money Trading (RMT) for Virtual Goods or Virtual Points.</li>
+            <li>Impersonate any person or entity.</li>
+        </ul>
+        <h3>5. Virtual Points and Virtual Goods</h3>
+        <p>The Services and Software are not being 'sold' to you; you have no ownership or proprietary interests in them. Virtual Points and Virtual Goods have no real-world monetary value and cannot be sold, traded, transferred, or exchanged for money outside of expressly permitted marketplaces.</p>
+        <h3>6. Updates and Beta Version</h3>
+        <p>We are constantly improving the Services, so we may update them from time to time, which may block your access temporarily or modify gameplay. If the Software is a "beta version", gameplay data may be modified or deleted without liability.</p>
+        <h3>7. Disclaimer and Limitation of Liability</h3>
+        <p>The Services and Software are provided "AS-IS". The NetEase Entities disclaim all warranties, express or implied. We are not liable for any indirect, incidental, special, consequential, or exemplary damages, including loss of profits or data.</p>
+        <h3>8. Breach and Indemnification</h3>
+        <p>If you breach these Terms, we may take actions such as: removing your Content, restoring gameplay data, restricting access, terminating your right to use the Services, or taking legal action. You agree to defend and indemnify NetEase Entities against any claims arising from your breach.</p>
+        <h3>9. Intellectual Property</h3>
+        <p>NetEase retains all right, title, and ownership in the Services, Software, and all associated data. The Work is protected by international intellectual property law. If you believe your copyright is infringed, please submit a DMCA notice to our copyright agent.</p>
+        <h3>10. Payment & Refund Policy</h3>
+        <p style="color: #00e5ff; font-weight: bold;">UNLESS OTHERWISE PROVIDED IN THESE TERMS OR REQUIRED BY APPLICABLE LAW, ALL PURCHASES WITHIN OUR SERVICES ARE FINAL, NON-REFUNDABLE, AND NON-CANCELLABLE.</p>
+        <p>Specific refund rights may apply depending on your region (e.g., 14-day cancellation right in the EEA/UK for unused digital content).</p>
+        <h3>11. Dispute Resolution & Governing Law</h3>
+        <ul style="margin-left: 20px; margin-bottom: 15px;">
+            <li><strong style="color: #00e5ff;">EEA, Switzerland, UK:</strong> Governed by the laws of England and Wales.</li>
+            <li><strong style="color: #00e5ff;">North America:</strong> Governed by California law. Arbitration administered by NAM.</li>
+            <li><strong style="color: #00e5ff;">Rest of World:</strong> Governed by the laws of Singapore. Arbitration administered by SIAC.</li>
+        </ul>
+        <p>We encourage you to contact our customer support team first to resolve issues informally. Any unresolved disputes will be subject to binding arbitration, and you waive the right to a class-action lawsuit or a jury trial.</p>
+        <h3>12. Miscellaneous & Contact</h3>
+        <p>These Terms set forth the entire agreement between you and us. If any provision is held invalid, the remainder will continue in full force. For any questions, please contact us via the in-game customer services or on the official websites of our Services.</p>
+        <hr>
+        <p style="font-size: 11px; text-align: center; opacity: 0.6;">By continuing to use our Services, you agree to these Terms of Use.</p>
+    </div>
+  </div>
+</div>
         </div>
     </footer>
 
@@ -1630,5 +1886,71 @@
             setInterval(triggerFakePopup, 6500); 
         }, 2000);
 </script>
+
+<script>
+    // حيدنا DOMContentLoaded باش يخدم الكود ديريكت وميزگلوش المتصفح
+    
+    // البوبابات
+    var privacyModal = document.getElementById("privacyModal");
+    var termsModal = document.getElementById("termsModal");
+    
+    // الروابط
+    var btnPrivacy = document.getElementById("openPrivacy");
+    var btnTerms = document.getElementById("openTerms");
+    
+    // زر الإغلاق X
+    var spanPrivacy = document.getElementById("closePrivacy");
+    var spanTerms = document.getElementById("closeTerms");
+
+    // دالة ديال إغلاق البوباب مع أنيماسيون Sci-Fi
+    function closeSciFiModal(modal) {
+        modal.classList.add("closing"); // كنزيدو كلاس الأنيماسيون
+        setTimeout(function() {
+            modal.style.display = "none"; // كنخفيوه مورا ما تسالي الأنيماسيون
+            modal.classList.remove("closing"); // كنحيدو الكلاس باش المرة الجاية يتحل عادي
+        }, 300); // 300 ميلي ثانية هي مدة الأنيماسيون (نفسها لي درنا فالـ css)
+    }
+
+    // ملي تكليكي على Privacy
+    if(btnPrivacy) {
+        btnPrivacy.onclick = function(e) {
+            e.preventDefault();
+            privacyModal.style.display = "block";
+        }
+    }
+
+    // ملي تكليكي على Terms
+    if(btnTerms) {
+        btnTerms.onclick = function(e) {
+            e.preventDefault();
+            termsModal.style.display = "block";
+        }
+    }
+
+    // ملي تكليكي على X ديال Privacy
+    if(spanPrivacy) {
+        spanPrivacy.onclick = function() {
+            closeSciFiModal(privacyModal);
+        }
+    }
+
+    // ملي تكليكي على X ديال Terms
+    if(spanTerms) {
+        spanTerms.onclick = function() {
+            closeSciFiModal(termsModal);
+        }
+    }
+
+    // ملي تكليكي برا المربع الكحل تسد
+    window.addEventListener('click', function(event) {
+        if (event.target == privacyModal) {
+            closeSciFiModal(privacyModal);
+        }
+        if (event.target == termsModal) {
+            closeSciFiModal(termsModal);
+        }
+    });
+</script>
+
 </body>
 </html>
