@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-
-    
+<head>    
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-WHX6ZNBWNL"></script>
 <script>
@@ -12,8 +10,6 @@
 
   gtag('config', 'G-WHX6ZNBWNL');
 </script>
-
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Play Once Human - The Ultimate Weird Survival Game</title>
@@ -90,9 +86,7 @@
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
-
-
-
+        
         @keyframes glitch {
             0% { transform: translate(0) }
             20% { transform: translate(-2px, 2px) }
@@ -162,8 +156,6 @@
         .nav-links a:hover { color: var(--accent-secondary); }
         .nav-links a:hover::after { width: 100%; }
 
-
-
         /* --- SCROLL REVEAL CLASSES --- */
         .reveal {
             opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
@@ -212,22 +204,19 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* الحجم الخاص بالزر الكبير فالوسط */
         .btn {
             font-size: 1.3rem; 
             letter-spacing: 2px; 
             padding: 20px 45px;
-            animation: pulse-btn-new 2.5s infinite; /* نبض خفيف */
+            animation: pulse-btn-new 2.5s infinite; 
         }
 
-        /* الحجم الخاص بزر القائمة الفوقاني */
         .nav-btn {
             font-size: 1rem; 
             letter-spacing: 1px; 
             padding: 10px 24px;
         }
 
-        /* لمعة الزجاج (Glass Shine Effect) لي مخبية */
         .btn::before, .nav-btn::before {
             content: '';
             position: absolute;
@@ -236,29 +225,24 @@
             width: 50%;
             height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-            transform: skewX(-25deg); /* كنميلوها باش تجي بحال الضوء */
+            transform: skewX(-25deg); 
             z-index: -1;
             transition: left 0.6s ease;
         }
 
-        /* تفاعل خرافي ملي كتحط الماوس (Hover) */
         .btn:hover, .nav-btn:hover {
-            /* اللون كيولي فاتح */
             background: linear-gradient(45deg, #ff4d5b, var(--accent-primary));
             transform: translateY(-4px) scale(1.02);
-            animation: none; /* كنحبسو النبض */
+            animation: none; 
             
-            /* الإطار كيولي سماوي باش يتخلطو ألوان التيم + توهج قوي */
             border-color: var(--accent-secondary); 
             box-shadow: 0 10px 25px rgba(230, 57, 70, 0.8), 0 0 15px rgba(0, 240, 255, 0.5);
         }
 
-        /* اللمعة كدوز بالزربة ملي كتحط الماوس */
         .btn:hover::before, .nav-btn:hover::before {
             left: 200%;
         }
 
-        /* أنيماسيون النبض الجديدة (أكثر نعومة) */
         @keyframes pulse-btn-new {
             0% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.6); }
             70% { box-shadow: 0 0 0 15px rgba(230, 57, 70, 0); }
@@ -293,10 +277,10 @@
         }
 
 
-/* --- فواصل السيكشنات (SECTION DIVIDERS) --- */
+/* ---  (SECTION DIVIDERS) --- */
         .has-divider {
             position: relative;
-            overflow: visible !important; /* هادي هي الساروت باش المتصفح مايقطعش الصورة من الفوق */
+            overflow: visible !important; 
         }
 
         .has-divider::before {
@@ -307,14 +291,13 @@
             width: 100%;
             height: 160px; 
             
-            /* زدنا www. فالرابط باش تقرا مزيان، وزدنا شوية د الإضاءة باش يبانو الخطوط الحمرين */
             background-image: url('https://i.postimg.cc/wvQd3gM4/D.png');
             background-size: 100% 100%; 
             background-repeat: no-repeat;
             background-position: center;
-            filter: brightness(1.2) drop-shadow(0 0 10px rgba(0,0,0,0.8)); /* باش يبان الفاصل واعر فوق الكحل */
+            filter: brightness(1.2) drop-shadow(0 0 10px rgba(0,0,0,0.8)); 
             
-            z-index: 10; /* كبرنا الرقم باش يجي فوق كلشي */
+            z-index: 10;
             pointer-events: none; 
         }
 
@@ -355,32 +338,28 @@
             background: rgba(7, 7, 10, 0.2);
         }
 
-/* --- ستايل أيقونة التشغيل (الصورة) --- */
         .custom-play-btn {
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             display: flex; justify-content: center; align-items: center;
             z-index: 2;
             transition: all 0.3s ease;
-            /* أنيماسيون خفيفة باش الأيقونة تبقى تطلع وتهبط بحال يلا كطوف */
             animation: float-icon 3s ease-in-out infinite; 
         }
 
         .custom-play-btn img {
-            width: 100px; /* من هنا تقدر تكبر أو تصغر الأيقونة ديالك */
+            width: 100px; 
             height: auto;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8)); /* ضل كحل باش تبان معزولة على الخلفية */
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* التأثير ملي تحط الماوس على التريلر */
         .trailer-thumbnail-wrapper:hover .custom-play-btn {
-            animation-play-state: paused; /* كنحبسو الأنيماسيون ديال الطفوان ملي تقيسها */
+            animation-play-state: paused; 
         }
 
         .trailer-thumbnail-wrapper:hover .custom-play-btn img {
-            transform: scale(1.15); /* الأيقونة كتكبر شوية */
-            /* توهج سماوي خفيف ملي تحط الماوس */
+            transform: scale(1.15);
             filter: drop-shadow(0 0 25px rgba(0, 240, 255, 0.8)); 
         }
 
@@ -428,7 +407,7 @@
 /* --- ستايل زر الإغلاق (صورة) --- */
         .close-modal {
             position: absolute; 
-            top: -45px; /* باش يجي طالع شوية على الفيديو */
+            top: -45px;
             right: -10px; 
             cursor: pointer;
             z-index: 10;
@@ -444,7 +423,6 @@
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* التأثير ملي تحط الماوس على علامة X */
         .close-modal:hover img {
             transform: scale(1.2) rotate(90deg); /* كتكبر شوية وكتدور بـ 90 درجة */
             filter: drop-shadow(0 0 15px rgba(230, 57, 70, 0.9)); /* توهج باللون الأحمر */
@@ -481,7 +459,6 @@
             border: 1px solid rgba(230, 57, 70, 0.3); 
         }
 
-        /* توهج أزرق وأحمر خفيف فالجوانب الداخلية */
         .epic-slider-container::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             box-shadow: inset 30px 0 60px rgba(0, 240, 255, 0.1), inset -30px 0 60px rgba(230, 57, 70, 0.1);
